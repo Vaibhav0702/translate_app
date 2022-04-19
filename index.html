@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    div {
+      border: 1px solid;
+      /* height: 300px; */
+      padding: 20px;
+    }
+    #nav{
+      /* border: 1px solid red; */
+      color: white;
+      padding: 0px;
+      margin-bottom: 20px;
+      background-color: rgb(54, 54, 255);
+    }
+    #left{
+      border:1px solid blue;
+      padding: 0px;
+      width: 20%;
+      text-align: center;
+    }
+    #container {
+      display: flex;
+      width: 80%;
+      margin: auto;
+    }
+    #input-section {
+      flex: 1;
+      margin: 5%;
+      text-align: center;
+    }
+    #output-section {
+      flex: 1;
+      margin: 5%;
+      text-align: center;
+    }
+    #input-text {
+      width: 80%;
+      height: 30%;
+      text-align: center;
+    }
+    button{
+      margin: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: rgb(54, 54, 255);
+      color: white;
+    }
+  </style>
+
+  <body>
+    <div id="nav">
+
+          <div id="left">
+            <h1>Translate App</h1>
+          </div>
+
+    </div>
+    <div id="container">
+      <div id="input-section">
+        <!--Create button that will run translate text function, give id "translate-btn"-->
+        <button id="translate-btn" onclick="translate_Text()">Translate</button>
+        <!--Create input that will accept text to be translated, give id "input-text"-->
+        <textarea id="input-text"></textarea>
+      </div>
+      <div id="output-section">
+        <p id="translated-text">
+          <!--Show translated text here-->
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  const translate_Text =  async () => {
+    try {
+      let input = document.getElementById("input-text").value;
+
+      let res = await fetch("https://libretranslate.de/translate", {
+        method: "POST",
+        body: JSON.stringify({
+        q:input,
+        source:"en",
+        target:"hi",
+        format:"text",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      let data = await res.json();
+      document.getElementById("translated-text").innerHTML=data.translatedText;
+      console.log("data:", data);
+    } catch (err) {
+      console.log("err:", err);
+    }
+  }
+</script>
+
